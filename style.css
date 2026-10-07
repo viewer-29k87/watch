@@ -1,0 +1,83 @@
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; background: #000; color: #eee; font: 16px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
+
+#stage { position: fixed; inset: 0; }
+#v { width: 100%; height: 100%; object-fit: contain; background: #000; }
+
+/* Subtitle overlay (filled by data-channel messages in step 5) */
+#subs {
+  position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%);
+  max-width: 85%; text-align: center; white-space: pre-line;
+  font-size: clamp(18px, 2.6vw, 40px); line-height: 1.25; color: #fff;
+  text-shadow: 0 0 4px #000, 0 0 4px #000, 0 2px 6px #000;
+  pointer-events: none;
+}
+
+#overlay {
+  position: fixed; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+  background: rgba(0, 0, 0, .88); z-index: 2; text-align: center; padding: 24px;
+}
+#overlay p { margin: 0; font-size: 18px; }
+#startBtn { font-size: 18px; padding: 12px 28px; }
+#codeBox { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+#codeBox .label { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: #9aa4b2; }
+#code { font: 700 clamp(30px, 8vw, 54px)/1.1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .04em; color: #3fb9a8; }
+#codeBox .hint { font-size: 14px; color: #9aa4b2; }
+
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ---- bottom controls ---- */
+#controls {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 1;
+  display: flex; justify-content: flex-end;
+  padding: 36px max(14px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+  background: linear-gradient(transparent, rgba(0, 0, 0, .65));
+  transition: opacity .25s;
+  pointer-events: none;            /* only the bar itself takes clicks */
+}
+#controls .bar {
+  pointer-events: auto;
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px; border-radius: 999px;
+  background: rgba(24, 28, 34, .62);
+  border: 1px solid rgba(255, 255, 255, .14);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+body.idle #controls { opacity: 0; }
+body.idle #controls .bar { pointer-events: none; }
+body.idle { cursor: none; }
+
+button { font: inherit; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+button.icon {
+  width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%;
+  display: grid; place-items: center; color: #fff; background: transparent;
+  transition: background .15s, transform .1s;
+}
+button.icon:hover { background: rgba(255, 255, 255, .16); }
+button.icon:active { transform: scale(.92); background: rgba(255, 255, 255, .24); }
+button.icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+#startBtn {
+  background: #3fb9a8; color: #07201c; font-weight: 600; font-size: 18px;
+  border: 0; border-radius: 999px; padding: 14px 34px;
+}
+#startBtn:hover { background: #55cbbb; }
+
+/* volume slider */
+#vol {
+  --pct: 100%;
+  -webkit-appearance: none; appearance: none; background: transparent;
+  width: 110px; height: 28px; margin: 0 4px; cursor: pointer; touch-action: none;
+}
+#vol::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(to right, #fff var(--pct), rgba(255, 255, 255, .28) var(--pct)); }
+#vol::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 1px 4px rgba(0, 0, 0, .5); }
+#vol::-moz-range-track { height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .28); }
+#vol::-moz-range-progress { height: 4px; border-radius: 2px; background: #fff; }
+#vol::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 0; }
+
+/* phones: the hardware volume keys do this job, so keep only the two buttons */
+@media (hover: none) and (pointer: coarse) { #vol { display: none; } }
+
+:focus-visible { outline: 2px solid #3fb9a8; outline-offset: 2px; }

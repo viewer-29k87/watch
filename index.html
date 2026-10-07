@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self' blob:; connect-src wss: ws://127.0.0.1:* ws://localhost:*; base-uri 'none'; form-action 'none'">
+  <title>Watch together</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="stage">
+    <video id="v" autoplay playsinline></video>
+    <div id="subs" hidden></div>
+  </div>
+
+  <div id="overlay">
+    <p id="msg">Connecting…</p>
+    <div id="codeBox" hidden>
+      <span class="label">Your code</span>
+      <strong id="code"></strong>
+      <span class="hint">Tell the host this code so they know it's you.</span>
+    </div>
+    <button id="startBtn" hidden>Click to start</button>
+  </div>
+
+  <div id="controls">
+    <div class="bar">
+      <button id="muteBtn" class="icon" aria-label="Mute" title="Mute (M)"><svg viewBox="0 0 24 24" aria-hidden="true"><use id="muteIcon" href="#i-volume"/></svg></button>
+      <input id="vol" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+      <button id="fsBtn" class="icon" aria-label="Fullscreen" title="Fullscreen (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><use id="fsIcon" href="#i-fs-enter"/></svg></button>
+    </div>
+  </div>
+
+  <svg class="sprite" aria-hidden="true">
+    <defs>
+      <symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
+      <symbol id="i-muted" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6m0-6-5 6"/></symbol>
+      <symbol id="i-fs-enter" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+      <symbol id="i-fs-exit" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
+    </defs>
+  </svg>
+
+  <script src="relay.js"></script>
+  <script src="client.js"></script>
+  <script src="viewer.js"></script>
+</body>
+</html>
