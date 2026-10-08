@@ -206,6 +206,7 @@
     $('fsIcon').setAttribute('href', on ? '#i-fs-exit' : '#i-fs-enter');
     $('fsBtn').setAttribute('aria-label', on ? 'Exit fullscreen' : 'Fullscreen');
     $('fsBtn').title = on ? 'Exit fullscreen (F)' : 'Fullscreen (F)';
+    $('fsBtn').classList.toggle('on', on);
   };
   ['fullscreenchange', 'webkitfullscreenchange'].forEach((ev) => document.addEventListener(ev, syncFs));
   ['webkitbeginfullscreen', 'webkitendfullscreen'].forEach((ev) => v.addEventListener(ev, syncFs));
@@ -217,9 +218,9 @@
     $('muteIcon').setAttribute('href', off ? '#i-muted' : '#i-volume');
     $('muteBtn').setAttribute('aria-label', off ? 'Unmute' : 'Mute');
     $('muteBtn').title = off ? 'Unmute (M)' : 'Mute (M)';
-    const pct = v.muted ? 0 : v.volume * 100;
+    $('muteBtn').classList.toggle('on', off);
     $('vol').value = v.muted ? 0 : v.volume;
-    $('vol').style.setProperty('--pct', `${pct}%`);
+    $('vol').style.setProperty('--p', `${v.muted ? 0 : v.volume * 100}%`);
   };
   v.addEventListener('volumechange', syncSound);
   $('muteBtn').onclick = () => {
