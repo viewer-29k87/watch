@@ -1,6 +1,4 @@
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-html, body { margin: 0; height: 100%; background: #000; color: #eee; font: 16px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
+html, body { margin: 0; height: 100%; background: #000; color: var(--text); font: 400 16px/1.4 var(--font-ui); overflow: hidden; }
 
 #stage { position: fixed; inset: 0; }
 #v { width: 100%; height: 100%; object-fit: contain; background: #000; }
@@ -22,13 +20,13 @@ html, body { margin: 0; height: 100%; background: #000; color: #eee; font: 16px/
 #overlay p { margin: 0; font-size: 18px; }
 #startBtn { font-size: 18px; padding: 12px 28px; }
 #codeBox { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-#codeBox .label { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: #9aa4b2; }
-#code { font: 700 clamp(30px, 8vw, 54px)/1.1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .04em; color: #3fb9a8; }
-#codeBox .hint { font-size: 14px; color: #9aa4b2; }
+#codeBox .label { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-value); }
+#code { font: 700 clamp(30px, 8vw, 54px)/1.1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .04em; color: var(--accent); }
+#codeBox .hint { font-size: 14px; color: var(--text-value); }
 
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 
-/* ---- bottom controls ---- */
+/* ---- bottom controls: dark translucent panel, 2px line border, accent for active toggles ---- */
 #controls {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 1;
   display: flex; justify-content: flex-end;
@@ -39,45 +37,30 @@ html, body { margin: 0; height: 100%; background: #000; color: #eee; font: 16px/
 }
 #controls .bar {
   pointer-events: auto;
-  display: flex; align-items: center; gap: 6px;
-  padding: 5px; border-radius: 999px;
-  background: rgba(24, 28, 34, .62);
-  border: 1px solid rgba(255, 255, 255, .14);
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px; border-radius: var(--radius);
+  background: rgba(17, 19, 23, .82);
+  border: calc(2*var(--u)) solid var(--line);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
 }
 body.idle #controls { opacity: 0; }
 body.idle #controls .bar { pointer-events: none; }
 body.idle { cursor: none; }
 
-button { font: inherit; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 button.icon {
-  width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%;
-  display: grid; place-items: center; color: #fff; background: transparent;
+  width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--radius);
+  display: grid; place-items: center; color: var(--text-strong); background: transparent;
   transition: background .15s, transform .1s;
 }
-button.icon:hover { background: rgba(255, 255, 255, .16); }
-button.icon:active { transform: scale(.92); background: rgba(255, 255, 255, .24); }
+button.icon:hover:not(:disabled) { background: rgba(255, 255, 255, .1); color: var(--text-strong); }
+button.icon:active { transform: scale(.94); }
+button.icon.on, button.icon.on:hover:not(:disabled) { background: var(--accent); color: var(--accent-ink); }
 button.icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-#startBtn {
-  background: #3fb9a8; color: #07201c; font-weight: 600; font-size: 18px;
-  border: 0; border-radius: 999px; padding: 14px 34px;
-}
-#startBtn:hover { background: #55cbbb; }
+#startBtn { height: auto; font-size: 18px; padding: 14px 34px; }
 
-/* volume slider */
-#vol {
-  --pct: 100%;
-  -webkit-appearance: none; appearance: none; background: transparent;
-  width: 110px; height: 28px; margin: 0 4px; cursor: pointer; touch-action: none;
-}
-#vol::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(to right, #fff var(--pct), rgba(255, 255, 255, .28) var(--pct)); }
-#vol::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 1px 4px rgba(0, 0, 0, .5); }
-#vol::-moz-range-track { height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .28); }
-#vol::-moz-range-progress { height: 4px; border-radius: 2px; background: #fff; }
-#vol::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 0; }
+/* volume slider: track/thumb come from theme.css; --p is the filled part */
+#vol { width: 120px; height: 28px; margin: 0 6px; touch-action: none; }
 
 /* phones: the hardware volume keys do this job, so keep only the two buttons */
 @media (hover: none) and (pointer: coarse) { #vol { display: none; } }
-
-:focus-visible { outline: 2px solid #3fb9a8; outline-offset: 2px; }
